@@ -1,3 +1,15 @@
-const API = 'APIhttps://pokeapi.co/api/v2/'
+const API = 'https://pokeapi.co/api/v2/'
 
-alert('Hello')
+const pokemon = 'pokemon/dragonite'
+const url = API.concat(pokemon)
+
+const searchBtn = document.querySelector('#search')
+searchBtn.addEventListener('click', () => {
+	fetch(url)
+		.then(data => {
+			console.log(data)
+		})
+		.catch(error => {
+			console.warn(error)
+		})
+})
