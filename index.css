@@ -1,9 +1,69 @@
+:root {
+	--headerHeight: 4rem;
+	--footerHeight: 4rem;
+}
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
+html {
+	font-size: 62.5%;
+	font-family: 'Open Sans', sans-serif;
+}
+
 body {
-	background: gray;
+	width: 100%;
+	height: 100vh;
+	font-size: 1.6rem;
+	background: rgb(34,193,195);
+	background: linear-gradient(180deg, rgba(34,193,195,1) 0%, rgba(45,253,83,1) 100%);
+}
+
+header {
+	height: var(--headerHeight);
+}
+
+main {
+	min-height : calc(100vh - (var(--headerHeight) + var(--footerHeight)));
+}
+
+form {
+	display: grid;
+	place-items: center;
+	grid-template-columns: auto 1fr auto;
+}
+
+.formBox {
+	/* position: relative; */
+	width: 30rem;
+	background: blue;
+}
+
+.formBox input {
+	border: 0;
+	border-radius: 0.4rem;
+	/* position: relative; */
+	
+}
+
+form input[type='submit'] {
+	width: 15rem;
+}
+
+footer {
+	width: 100%;
+	height: var(--footerHeight);
+}
+
+.signature {
+	font-size: 2.4rem;
+}
+
+.centerTitle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
