@@ -37,16 +37,12 @@ form {
 }
 
 .formBox {
-	/* position: relative; */
 	width: 30rem;
-	background: blue;
 }
 
 .formBox input {
 	border: 0;
 	border-radius: 0.4rem;
-	/* position: relative; */
-	
 }
 
 form input[type='submit'] {
@@ -67,3 +63,14 @@ footer {
 	justify-content: center;
 	align-items: center;
 }
+
+img.shadow {
+	filter: contrast(25%) brightness(25%);
+}
+
+/* img.shadow:hover {
+	filter: contrast(0%) brightness(10%);
+}
+img.shadow {
+  transition: 0.5s
+} */

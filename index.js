@@ -1,13 +1,19 @@
-const API = 'https://pokeapi.co/api/v2/'
-
-const pokemon = 'pokemon/dragonite'
-const url = API.concat(pokemon)
+const API = 'https://pokeapi.co/api/v2/pokemon/'
 
 const searchBtn = document.querySelector('#search')
+
 searchBtn.addEventListener('click', () => {
+	const guess = document.querySelector('#userGuess').value
+	const form = document.querySelector('form')
+	const url = `${API}${guess}`
+
 	fetch(url)
-		.then(data => {
-			console.log(data)
+		.then(res => res.json())
+		.then(res => {
+			const imgPkm = document.createElement('img')
+			imgPkm.src = res.sprites.front_default
+			imgPkm.classList.add('shadow')
+			form.after(imgPkm)
 		})
 		.catch(error => {
 			console.warn(error)
