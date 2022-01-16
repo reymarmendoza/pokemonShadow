@@ -1,15 +1,49 @@
 const API = 'https://pokeapi.co/api/v2/pokemon/'
 
 const refreshBtn = document.querySelector('#refresh')
-const searchBtn = document.querySelector('#search')
+const sendBtn = document.querySelector('#send')
 const form = document.querySelector('form')
+let pokemon = ''
+
+function sortOptions(pokemons) {
+	pokemons = capitalName(pokemons)
+	for (let i = 0; i < 4; i++) {
+		const rdm = Math.floor(Math.random() * (3 - 0))
+		let keeper = pokemons[rdm]
+		pokemons[rdm] = pokemons[i]
+		pokemons[i] = keeper
+	}
+	return pokemons
+}
+
+function capitalName(name) {
+	return name.map(pkm => {
+		let pkmName = pkm.split('')
+		pkmName[0] = pkmName[0].toUpperCase()
+		return pkmName.join('')
+	})
+}
+
+function generateRdmNum() {
+	return Math.floor(Math.random() * (152 - 1) + 1)
+}
+
+function checkMessages() {
+	const msgRes = document.querySelector('.msgRes')
+	if (msgRes) {
+		msgRes.remove()
+	}
+}
 
 refreshBtn.addEventListener('click', () => {
 	let optionsPkm = []
+	
+	checkMessages()
 
 	fetch(`${API}${generateRdmNum()}`)
 		.then(res => res.json())
 		.then(res => {
+			pokemon = res.forms[0].name
 			optionsPkm.push(res.forms[0].name)
 
 			if (document.querySelector('.shadow')) {
@@ -28,7 +62,7 @@ refreshBtn.addEventListener('click', () => {
 		
 	loadOptions()
 		.then(() => {
-			console.log('optionsPkm:', optionsPkm)
+			optionsPkm = sortOptions(optionsPkm)
 			const optContainer = document.querySelector('#selectPkm')
 			
 			if (document.querySelector('.pkmOption')){
@@ -40,11 +74,10 @@ refreshBtn.addEventListener('click', () => {
 				const radioOptions = document.createElement('input')
 				const radioLabel = document.createElement('label')
 				const div = document.createElement('div')
-				const texto = 'pkmSelection'
 
 				radioOptions.setAttribute('type', 'radio')
 				radioOptions.setAttribute('id', `${optionsPkm[i]}`)
-				radioOptions.setAttribute('name', texto)
+				radioOptions.setAttribute('name', 'pkmSelection')
 				radioOptions.setAttribute('value', `${optionsPkm[i]}`)
 				div.append(radioOptions)
 				
@@ -54,22 +87,8 @@ refreshBtn.addEventListener('click', () => {
 
 				div.classList.add('pkmOption')
 				optContainer.append(div)
-				// document.getElementById("red").checked = true; ******************
 			}
-
-			// const radioOptions = document.querySelectorAll('.pkmOption')
-			// // console.log(radioOptions)
-			// radioOptions.forEach(opt => {
-			// 	opt.addEventListener('click', e => {
-			// 		console.log(e.target.textContent)
-			// 		console.log(e)
-			// 	})
-			// })
 		})
-
-	function generateRdmNum() {
-		return Math.floor(Math.random() * (152 - 1) + 1)
-	}
 
 	function loadOptions() {
 		return new Promise((resolve, reject) => {
@@ -77,7 +96,7 @@ refreshBtn.addEventListener('click', () => {
 				fetchPkmNames()
 					.then(res => {
 						optionsPkm.push(res)
-						if (i === 2) {
+						if (optionsPkm.length === 4) {
 							resolve()
 						}
 					})
@@ -99,7 +118,19 @@ refreshBtn.addEventListener('click', () => {
 	}
 })
 
-searchBtn.addEventListener('click', () => {
-	const guess = document.querySelector('#userGuess').value
-	console.log('guess:', guess)
+sendBtn.addEventListener('click', e => {
+	e.preventDefault()
+	checkMessages()
+	const options = [...document.querySelectorAll("input[name='pkmSelection']")]
+	const selected = options.filter(opt => (opt.checked))
+
+	const p = document.createElement('p')
+	p.classList.add('msgRes')
+	if (selected[0].value.toLowerCase() === pokemon) {
+		p.innerText = 'Ganaste!!'
+	} else {
+		p.innerText = 'Vuelve a intentar'
+	}
+
+	form.append(p)
 })
