@@ -26,29 +26,45 @@ refreshBtn.addEventListener('click', () => {
 			console.warn(error)
 		})
 		
-		loadOptions()
+	loadOptions()
 		.then(() => {
 			console.log('optionsPkm:', optionsPkm)
 			const optContainer = document.querySelector('#selectPkm')
+			
 			if (document.querySelector('.pkmOption')){
 				const options =  document.querySelectorAll('.pkmOption')
 				options.forEach(opt => opt.remove())
 			}
+
 			for (let i = 0; i < 4; i++) {
 				const radioOptions = document.createElement('input')
 				const radioLabel = document.createElement('label')
 				const div = document.createElement('div')
-				const texto = `pkmSelection${i}`
+				const texto = 'pkmSelection'
+
 				radioOptions.setAttribute('type', 'radio')
+				radioOptions.setAttribute('id', `${optionsPkm[i]}`)
 				radioOptions.setAttribute('name', texto)
+				radioOptions.setAttribute('value', `${optionsPkm[i]}`)
 				div.append(radioOptions)
-				radioLabel.setAttribute('for', texto)
+				
+				radioLabel.setAttribute('for', `${optionsPkm[i]}`)
 				radioLabel.innerText = `${optionsPkm[i]}`
 				div.append(radioLabel)
+
 				div.classList.add('pkmOption')
 				optContainer.append(div)
 				// document.getElementById("red").checked = true; ******************
 			}
+
+			// const radioOptions = document.querySelectorAll('.pkmOption')
+			// // console.log(radioOptions)
+			// radioOptions.forEach(opt => {
+			// 	opt.addEventListener('click', e => {
+			// 		console.log(e.target.textContent)
+			// 		console.log(e)
+			// 	})
+			// })
 		})
 
 	function generateRdmNum() {
