@@ -22,13 +22,34 @@ refreshBtn.addEventListener('click', () => {
 			imgPkm.setAttribute('width', '192')
 			form.after(imgPkm)
 		})
-		// <input type='radio' class='pkmOption' name='pkmSelection' />
 		.catch(error => {
 			console.warn(error)
 		})
-
-	loadOptions()
-		.then(() => console.log('optionsPkm:', optionsPkm))
+		
+		loadOptions()
+		.then(() => {
+			console.log('optionsPkm:', optionsPkm)
+			const optContainer = document.querySelector('#selectPkm')
+			if (document.querySelector('.pkmOption')){
+				const options =  document.querySelectorAll('.pkmOption')
+				options.forEach(opt => opt.remove())
+			}
+			for (let i = 0; i < 4; i++) {
+				const radioOptions = document.createElement('input')
+				const radioLabel = document.createElement('label')
+				const div = document.createElement('div')
+				const texto = `pkmSelection${i}`
+				radioOptions.setAttribute('type', 'radio')
+				radioOptions.setAttribute('name', texto)
+				div.append(radioOptions)
+				radioLabel.setAttribute('for', texto)
+				radioLabel.innerText = `${optionsPkm[i]}`
+				div.append(radioLabel)
+				div.classList.add('pkmOption')
+				optContainer.append(div)
+				// document.getElementById("red").checked = true; ******************
+			}
+		})
 
 	function generateRdmNum() {
 		return Math.floor(Math.random() * (152 - 1) + 1)
@@ -38,7 +59,6 @@ refreshBtn.addEventListener('click', () => {
 		return new Promise((resolve, reject) => {
 			for (let i = 0; i < 3; i++) {
 				fetchPkmNames()
-					// .then(res => console.log(res))
 					.then(res => {
 						optionsPkm.push(res)
 						if (i === 2) {
